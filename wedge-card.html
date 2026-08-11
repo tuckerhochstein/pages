@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#26543E">
+<title>Wedge Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1EFE7;
+    --stripe:#E6E4D9;
+    --ink:#14201A;
+    --soft:#5D6862;
+    --turf:#26543E;
+    --turf-dk:#1A3B2C;
+    --mark:#F2C230;
+    --line:#CDCABE;
+    --pad:18px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#161A18;
+      --stripe:#1F2523;
+      --ink:#EDEFEA;
+      --soft:#9AA6A0;
+      --turf:#5FA382;
+      --turf-dk:#1E4433;
+      --line:#39413D;
+    }
+    .step{border-color:rgba(255,255,255,.34)}
+    .chip{border-color:#4A534E}
+  }
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-size:15px;
+    line-height:1.45;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:0 var(--pad) 56px}
+
+  /* ---------- header ---------- */
+  header{
+    background:var(--turf-dk);
+    color:#F1EFE7;
+    padding:14px var(--pad) 13px;
+    margin:0;
+  }
+  .board{
+    background:var(--turf-dk);
+    color:#F1EFE7;
+    padding:2px var(--pad) 20px;
+    margin:0 0 22px;
+    border-top:1px solid rgba(255,255,255,.13);
+  }
+  .board .eyebrow{color:#9DB3A6}
+  .hdr-in{max-width:480px;margin:0 auto}
+  h1{
+    font-family:"Barlow Condensed",Impact,sans-serif;
+    font-weight:700;
+    font-size:27px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    margin:0;
+    line-height:1;
+  }
+  .hdr-sub{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    color:#9DB3A6;
+    margin-top:6px;
+    text-transform:uppercase;
+  }
+
+  /* ---------- eyebrow ---------- */
+  .eyebrow{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:10.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--soft);
+    margin:0 0 8px;
+  }
+
+  /* ---------- distance dial ---------- */
+  .dial{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:6px;
+  }
+  .step{
+    width:58px;height:58px;flex:0 0 auto;
+    border:1.5px solid rgba(255,255,255,.34);
+    background:transparent;
+    border-radius:50%;
+    color:#F1EFE7;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:19px;font-weight:600;letter-spacing:.02em;
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step:active{background:rgba(255,255,255,.14)}
+  .step:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+  .yards{text-align:center;flex:1 1 auto;line-height:.9}
+  .yards b{
+    display:block;
+    color:#FFFFFF;
+    font-family:"Barlow Condensed",Impact,sans-serif;
+    font-weight:700;
+    font-size:78px;
+    letter-spacing:-.01em;
+    font-variant-numeric:tabular-nums;
+  }
+  .yards span{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#9DB3A6;
+  }
+  input[type=range]{
+    width:100%;margin:4px 0 0;
+    -webkit-appearance:none;appearance:none;background:transparent;
+  }
+  input[type=range]:focus-visible{outline:3px solid var(--mark);outline-offset:6px;border-radius:4px}
+  input[type=range]::-webkit-slider-runnable-track{height:3px;background:rgba(255,255,255,.28);border-radius:2px}
+  input[type=range]::-moz-range-track{height:3px;background:rgba(255,255,255,.28);border-radius:2px}
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:30px;height:30px;border-radius:50%;
+    background:var(--mark);border:4px solid var(--turf-dk);margin-top:-14px;
+    box-shadow:0 1px 3px rgba(0,0,0,.35);cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:22px;height:22px;border-radius:50%;background:var(--mark);
+    border:4px solid var(--turf-dk);box-shadow:0 1px 3px rgba(0,0,0,.35);cursor:pointer;
+  }
+
+  /* ---------- wind speed ---------- */
+  .wind{
+    display:none;
+    background:var(--turf-dk);
+    color:#F1EFE7;
+    border:none;
+    border-radius:3px;
+    padding:12px 14px 14px;
+    margin:-14px 0 24px;
+  }
+  .wind.on{display:block}
+  .wind-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px}
+  .wind-lab{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9DB3A6;
+  }
+  .wind-val{
+    color:#FFFFFF;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;
+  }
+  .wind-val i{font-style:normal;font-size:14px;font-weight:500;color:#9DB3A6;margin-left:3px}
+  #mph{margin:0}
+
+  /* ---------- the play ---------- */
+  .play{
+    background:var(--turf);
+    color:#F4F2EA;
+    border-radius:3px;
+    padding:16px 18px 18px;
+    margin-bottom:10px;
+  }
+  .play .eyebrow{color:#9DB3A6;margin-bottom:10px}
+  .club{
+    font-family:"Barlow Condensed",Impact,sans-serif;
+    font-weight:700;font-size:52px;line-height:.86;letter-spacing:.01em;
+    margin-bottom:14px;
+  }
+  .club em{font-style:normal;color:var(--mark)}
+  .facts{display:flex;gap:8px;flex-wrap:wrap}
+  .fact{
+    background:rgba(255,255,255,.11);
+    border-radius:2px;
+    padding:8px 11px;
+    flex:1 1 0;
+    min-width:118px;
+  }
+  .fact u{
+    display:block;text-decoration:none;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#9DB3A6;
+    margin-bottom:3px;
+  }
+  .fact strong{
+    display:block;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:23px;font-weight:600;line-height:1.05;letter-spacing:.01em;
+  }
+  .cue{
+    margin-top:13px;padding-top:12px;
+    border-top:1px solid rgba(255,255,255,.18);
+    font-size:13.5px;color:#DCE5DF;
+  }
+  .alt{
+    font-size:13px;color:var(--soft);
+    padding:2px 2px 0;
+    margin-bottom:22px;
+  }
+  .alt b{color:var(--ink);font-weight:600}
+
+  /* ---------- conditions ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
+  .chip{
+    border:1.5px solid var(--line);
+    background:transparent;
+    color:var(--soft);
+    border-radius:100px;
+    padding:9px 15px;
+    font-family:"IBM Plex Sans",sans-serif;
+    font-size:13.5px;font-weight:500;
+    cursor:pointer;
+  }
+  .chip[aria-pressed="true"]{
+    background:var(--mark);
+    border-color:var(--mark);
+    color:var(--ink);
+    font-weight:600;
+  }
+  .chip:focus-visible{outline:3px solid var(--turf);outline-offset:2px}
+
+  /* ---------- your clubs ---------- */
+  .clubs{border-top:none;margin:0 0 20px;background:var(--stripe);border-radius:3px}
+  .clubs > summary{padding:14px 14px}
+  .clubs > summary span:first-child{color:var(--ink)}
+  .clubs-peek{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;letter-spacing:.06em;color:var(--soft);
+    font-weight:400;text-transform:none;
+    margin-left:auto;margin-right:12px;
+  }
+  .clubs > .body{padding:0 14px 16px}
+  .clubs-note{margin:0 0 14px;font-size:13px;color:var(--soft);line-height:1.5}
+
+  .club-row{
+    display:flex;align-items:center;gap:12px;
+    padding:11px 0;border-bottom:1px solid var(--line);
+  }
+  .club-row:last-of-type{border-bottom:none}
+  .club-tag{
+    width:46px;flex:0 0 auto;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:24px;font-weight:700;color:var(--turf);
+  }
+  .club-full{
+    width:78px;flex:0 0 auto;
+    background:var(--paper);
+    border:1.5px solid var(--turf);
+    border-radius:3px;
+    padding:7px 4px;
+    color:var(--ink);
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:26px;font-weight:700;text-align:center;
+    font-variant-numeric:tabular-nums;
+    -moz-appearance:textfield;
+  }
+  .club-full::-webkit-outer-spin-button,
+  .club-full::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .club-full:focus{outline:3px solid var(--mark);outline-offset:1px}
+  .club-derived{
+    flex:1 1 auto;text-align:right;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;line-height:1.6;color:var(--soft);letter-spacing:.04em;
+  }
+  .club-derived b{
+    color:var(--ink);font-weight:500;
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;
+  }
+
+  /* ---------- reference blocks ---------- */
+  .ref{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .ref > summary{font-size:21px}
+  .ref-body{padding:0 0 8px}
+  .ref-body > details{border-top:1px solid var(--line)}
+  .ref-body > details:first-child{border-top:none}
+  .ref-body > details:last-of-type{border-bottom:none}
+  .ref-body > details > summary{
+    font-size:17px;letter-spacing:.04em;color:var(--soft);padding:13px 2px;
+  }
+  .ref-body > details[open] > summary{color:var(--ink)}
+  details{
+    border-top:1px solid var(--line);
+    padding:0;
+  }
+  details:last-of-type{border-bottom:1px solid var(--line)}
+  summary{
+    list-style:none;cursor:pointer;
+    padding:15px 2px;
+    color:var(--ink);
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:20px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:3px solid var(--turf);outline-offset:-3px}
+  summary::after{
+    content:"+";
+    font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:400;color:var(--ink);opacity:.7;
+  }
+  details[open] summary::after{content:"–"}
+  .body{padding:0 2px 22px}
+
+  /* matrix — mower stripes */
+  table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  th{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);opacity:.65;
+    font-weight:500;text-align:right;padding:0 0 7px;
+  }
+  th:first-child{text-align:left}
+  td{
+    padding:11px 0;
+    color:var(--ink);
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:22px;font-weight:700;text-align:right;
+  }
+  td:first-child{text-align:left;color:var(--turf)}
+  tbody tr:nth-child(odd){background:var(--stripe)}
+  tbody td:first-child{padding-left:9px}
+  tbody td:last-child{padding-right:9px}
+  .grip-key{
+    margin-top:12px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;line-height:1.8;color:var(--soft);
+  }
+  .grip-key b{color:var(--ink)}
+
+  ul{margin:0;padding:0;list-style:none}
+  li{
+    padding:11px 0;
+    border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  li:last-child{border-bottom:none}
+  li b{
+    display:block;
+    font-family:"Barlow Condensed",sans-serif;
+    font-size:17px;font-weight:600;letter-spacing:.02em;
+    color:var(--turf);
+    margin-bottom:2px;
+  }
+
+  .reset{
+    margin-top:14px;background:transparent;border:1.5px solid var(--line);
+    border-radius:3px;padding:10px 16px;font-family:"IBM Plex Sans",sans-serif;
+    font-size:13px;color:var(--soft);cursor:pointer;
+  }
+  .reset:focus-visible{outline:3px solid var(--turf);outline-offset:2px}
+  .saved{
+    display:inline-block;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--turf);
+    margin-left:10px;opacity:0;transition:opacity .25s;
+  }
+  .saved.on{opacity:1}
+  .saved.warn{color:#B4703A}
+  .store-warn{
+    display:none;
+    margin:14px 0 0;padding:10px 12px;
+    background:rgba(180,112,58,.13);
+    border-left:3px solid #B4703A;
+    border-radius:2px;
+    font-size:12.5px;line-height:1.5;color:var(--ink);
+  }
+
+  footer{
+    margin-top:26px;font-size:12.5px;color:var(--soft);line-height:1.6;
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-in">
+    <h1>Wedge Card</h1>
+    <div class="hdr-sub">48 · 52 · 56 &nbsp;/&nbsp; S grind, 12° bounce</div>
+  </div>
+</header>
+
+<section class="board">
+  <div class="hdr-in">
+    <p class="eyebrow">Distance to the pin</p>
+    <div class="dial">
+      <button class="step" id="down" aria-label="Five yards less">−5</button>
+      <div class="yards">
+        <b id="yardVal">95</b>
+        <span>yards</span>
+      </div>
+      <button class="step" id="up" aria-label="Five yards more">+5</button>
+    </div>
+    <input type="range" id="slider" min="15" max="150" value="95" step="1" aria-label="Distance to the pin in yards">
+  </div>
+</section>
+
+<div class="wrap">
+
+  <details class="clubs" id="clubsBox">
+    <summary>
+      <span>Your clubs</span>
+      <span class="clubs-peek" id="clubsPeek"></span>
+    </summary>
+    <div class="body">
+      <p class="clubs-note">
+        Type your full-swing carry for each club. The 9:00 and 10:30 numbers scale with it
+        automatically, and every recommendation above updates.
+      </p>
+      <div id="clubRows"></div>
+      <p class="store-warn" id="storeWarn">
+        This device isn't letting the page store data, so your numbers will reset when you close it.
+        Opening the file through Safari instead of a preview usually fixes it.
+      </p>
+      <button class="reset" id="reset">Reset to estimates</button>
+      <span class="saved" id="saved">Saved</span>
+    </div>
+  </details>
+
+  <div class="play" aria-live="polite">
+    <p class="eyebrow">Play</p>
+    <div class="club" id="club">52°</div>
+    <div class="facts">
+      <div class="fact"><u>Backswing</u><strong id="swing">10:30</strong></div>
+      <div class="fact"><u>Grip</u><strong id="grip">Full length</strong></div>
+    </div>
+    <div class="cue" id="cue">Same speed, same tempo. Length of backswing does the work.</div>
+  </div>
+  <p class="alt" id="alt"></p>
+
+  <p class="eyebrow">Conditions</p>
+  <div class="chips" id="chips">
+    <button class="chip" data-c="wind" aria-pressed="false">Into wind</button>
+    <button class="chip" data-c="down" aria-pressed="false">Downwind</button>
+    <button class="chip" data-c="up" aria-pressed="false">Uphill lie</button>
+    <button class="chip" data-c="dh" aria-pressed="false">Downhill lie</button>
+    <button class="chip" data-c="firm" aria-pressed="false">Firm &amp; tight</button>
+    <button class="chip" data-c="soft" aria-pressed="false">Soft / wet</button>
+  </div>
+
+  <div class="wind" id="windBox">
+    <div class="wind-top">
+      <span class="wind-lab" id="windLab">Into wind</span>
+      <span class="wind-val"><span id="mphVal">10</span><i>mph</i></span>
+    </div>
+    <input type="range" id="mph" min="3" max="40" value="10" step="1" aria-label="Wind speed in miles per hour">
+  </div>
+
+  <details class="ref">
+    <summary>Details</summary>
+    <div class="ref-body">
+    <details>
+      <summary>Full matrix</summary>
+      <div class="body">
+        <table>
+          <thead>
+            <tr><th>Club</th><th>9:00</th><th>10:30</th><th>Full</th></tr>
+          </thead>
+          <tbody id="matrix"></tbody>
+        </table>
+        <div class="grip-key">
+          Grip down <b>½"</b> → −4 yds<br>
+          Grip down <b>1"</b> → −7 yds<br>
+          Grip to the <b>bottom</b> → −11 yds
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>Short game</summary>
+      <div class="body">
+        <ul>
+          <li><b>50 yds, room to run</b>Half-length 56, down ½". Land it a third of the way.</li>
+          <li><b>40 yds, firm, front pin</b>56 down 1", square face, short swing. Land short, let it release.</li>
+          <li><b>30 yds, cushion under it</b>56 down 1". Rotation-driven, quiet hands, no flick.</li>
+          <li><b>20–30 yds, bare and firm</b>PW or 9-iron bump-and-run, gripped well down, ball back, weight forward. Zero bounce exposure.</li>
+          <li><b>Chip, tight fringe</b>PW gripped to the bottom. One hop and release.</li>
+          <li><b>Chip, rough or cushion</b>56, grip normal or barely down. You want mass through the grass.</li>
+          <li><b>Short-sided over sand</b>9:00 with the 56, face square. Don't open it — that stacks bounce on bounce. Accept 15 feet past.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Bunkers</summary>
+      <div class="body">
+        <ul>
+          <li><b>Standard greenside</b>56, grip down 1"+ to match dug-in feet. Face slightly open — this is where you want the bounce. Enter an inch or two behind, accelerate through.</li>
+          <li><b>Firm or wet sand</b>56, squarer face, shallower entry. Less bounce needed when the sand won't give.</li>
+          <li><b>Long bunker shot, 40+</b>52, down 1", square face, normal-length swing.</li>
+          <li><b>Fairway bunker</b>Grip down ½", ball slightly back, quiet legs, one more club. Clean contact beats distance.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Lies &amp; slopes</summary>
+      <div class="body">
+        <ul>
+          <li><b>Uphill</b>Slope adds loft — take one more club, match shoulders to the slope.</li>
+          <li><b>Downhill</b>Slope delofts and the ball runs — one less club, ball back, chase it down the slope.</li>
+          <li><b>Ball above feet</b>Grip down 1–2". Expect a draw, aim right.</li>
+          <li><b>Ball below feet</b>Do not grip down. Stay long, more knee flex, hold your posture. Expect a fade and lower flight.</li>
+          <li><b>Bare, burnt-out lie</b>Lower loft, ball an inch back, 60% weight forward. Leading edge sits closer to the turf.</li>
+          <li><b>Soft or wet turf</b>Ball a touch forward. This is where 12° of bounce earns its keep.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Two failure modes</summary>
+      <div class="body">
+        <ul>
+          <li><b>Deceleration</b>If the short swings come up consistently short, it's not the club. The swing is slowing down before the ball.</li>
+          <li><b>The flip</b>Gripping down makes the head feel light, which tempts a throw. Shorter and quieter at the same speed — not flickier. Handle moving toward the target through impact.</li>
+        </ul>
+      </div>
+    </details>
+    </div>
+  </details>
+
+  <footer>
+    Carry numbers, full grip, no wind. Distances shift with temperature, elevation and turf.
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DEFAULTS = [
+    {id:"56", label:"56°", loft:3, s:60, m:80, f:95},
+    {id:"52", label:"52°", loft:2, s:70, m:90, f:110},
+    {id:"48", label:"48°", loft:1, s:85, m:105, f:125},
+    {id:"pw", label:"PW",  loft:0, s:95, m:118, f:140}
+  ];
+  var SWINGS = [
+    {key:"s", name:"9:00",  pen:0.8},
+    {key:"m", name:"10:30", pen:0.0},
+    {key:"f", name:"Full",  pen:0.6}
+  ];
+  var GRIPS = [
+    {max:2,  cut:0,  name:"Full length"},
+    {max:5,  cut:4,  name:'Down ½"'},
+    {max:8,  cut:7,  name:'Down 1"'},
+    {max:12, cut:11, name:"To the bottom"}
+  ];
+
+  var CONDS = {
+    wind:{adj:12, loft:-0.6, cue:"Ball an inch back, three-quarter finish. Keep it under the wind — don't add loft to a headwind."},
+    down:{adj:-8, loft:0.5,  cue:"Downwind kills spin. It lands hot no matter what, so land it well short."},
+    up:  {adj:8,  loft:0,    cue:"Slope adds loft. Match your shoulders to the hill."},
+    dh:  {adj:-6, loft:-0.4, cue:"Slope delofts and it'll run. Ball back, chase the club down the slope."},
+    firm:{adj:0,  loft:-1.4, cue:"Bare lie: square face, ball an inch back, 60% weight forward. Never open the face here."},
+    soft:{adj:0,  loft:0.8,  cue:"Soft turf. Ball a touch forward and let the bounce do its job."}
+  };
+
+  var nums = clone(DEFAULTS);
+  var target = 95;
+  var mph = 10;
+  var active = {};
+  var memory = null;
+
+  var el = {
+    yard: byId("yardVal"), slider: byId("slider"),
+    club: byId("club"), swing: byId("swing"), grip: byId("grip"),
+    cue: byId("cue"), alt: byId("alt"),
+    matrix: byId("matrix"), saved: byId("saved"),
+    windBox: byId("windBox"), windLab: byId("windLab"), mphVal: byId("mphVal"), mph: byId("mph")
+  };
+
+  function byId(i){ return document.getElementById(i); }
+  function clone(a){ return a.map(function(c){ return {id:c.id,label:c.label,loft:c.loft,s:c.s,m:c.m,f:c.f}; }); }
+
+  /* ---------- recommendation ---------- */
+  function gripFor(reduction){
+    for(var i=0;i<GRIPS.length;i++){ if(reduction<=GRIPS[i].max) return GRIPS[i]; }
+    return null;
+  }
+
+  function build(playing, loftBias){
+    var out = [];
+    nums.forEach(function(c){
+      SWINGS.forEach(function(sw){
+        var base = c[sw.key];
+        var need = base - playing;
+        if(need < 0 || need > 12) return;
+        var g = gripFor(need);
+        if(!g) return;
+        var miss = Math.abs(need - g.cut);
+        var score = miss * 1.6 + sw.pen + (c.loft * loftBias);
+        out.push({club:c, swing:sw, grip:g, score:score});
+      });
+    });
+    out.sort(function(a,b){ return a.score - b.score; });
+    return out;
+  }
+
+  function render(){
+    var playing = target, loftBias = 0, cues = [];
+    Object.keys(active).forEach(function(k){
+      if(!active[k]) return;
+      var add = CONDS[k].adj;
+      if(k === "wind") add = Math.round(mph * 1.0 * (target / 100));
+      if(k === "down") add = -Math.round(mph * 0.55 * (target / 100));
+      playing += add;
+      loftBias += CONDS[k].loft;
+      cues.push(CONDS[k].cue);
+    });
+
+    el.yard.textContent = target;
+    el.slider.value = target;
+
+    if(target < 55){
+      shortGame(target);
+      if(cues.length) el.cue.textContent = cues[0];
+      return;
+    }
+
+    var opts = build(playing, loftBias);
+
+    if(!opts.length){
+      var longest = nums[nums.length-1];
+      el.club.innerHTML = playing > longest.f ? "More club" : "9-iron";
+      el.swing.textContent = "Full";
+      el.grip.textContent = "Full length";
+      el.cue.textContent = playing > longest.f
+        ? "Past the top of your PW. That's a 9-iron or longer."
+        : "Inside your shortest wedge swing — go to the short game.";
+      el.alt.textContent = "";
+      return;
+    }
+
+    var best = opts[0];
+    el.club.innerHTML = best.club.label;
+    el.swing.textContent = best.swing.name;
+    el.grip.textContent = best.grip.name;
+
+    var note = cues.length ? cues.join(" ")
+      : "Same speed, same tempo. Length of backswing does the work.";
+    if(playing !== target){
+      note = "Plays like " + playing + ". " + note;
+    }
+    el.cue.textContent = note;
+
+    var second = null;
+    for(var i=1;i<opts.length;i++){
+      if(opts[i].club.id !== best.club.id){ second = opts[i]; break; }
+    }
+    el.alt.innerHTML = second
+      ? "Or " + second.club.label + " · " + second.swing.name + " · " + second.grip.name.toLowerCase() +
+        " — " + (second.club.loft < best.club.loft ? "lower and running." : "higher and stopping.")
+      : "";
+  }
+
+  function shortGame(y){
+    var firm = !!active.firm;
+    var plan;
+    if(y >= 45)      plan = {c:"56°", s:"Half length", g:'Down ½"', cue:"Land it a third of the way and let it release."};
+    else if(y >= 30) plan = {c:"56°", s:"Short",       g:'Down 1"',  cue:"Square face, chest turning through. Land short, let it run."};
+    else if(y >= 18) plan = firm
+      ? {c:"PW", s:"Bump-and-run", g:"Well down", cue:"Ball back, weight forward, putting-stroke motion. Takes the bounce out of play."}
+      : {c:"56°", s:"Short", g:'Down 1"', cue:"Quiet hands, rotation-driven, no wrist flick."};
+    else             plan = {c:"PW", s:"Chip", g:"To the bottom", cue:"Low, one hop and release."};
+
+    if(firm && y >= 30) plan.cue = "Bare lie: ball an inch back, weight forward, square face. " + plan.cue;
+
+    el.club.innerHTML = plan.c;
+    el.swing.textContent = plan.s;
+    el.grip.textContent = plan.g;
+    el.cue.textContent = plan.cue;
+    el.alt.innerHTML = firm ? "" : "On genuinely bare turf, drop to the <b>PW bump-and-run</b>.";
+  }
+
+  /* ---------- your clubs ---------- */
+  var RATIOS = DEFAULTS.map(function(c){ return {s: c.s / c.f, m: c.m / c.f}; });
+
+  function drawClubs(){
+    var rows = byId("clubRows");
+    rows.innerHTML = "";
+    nums.forEach(function(c, ci){
+      var row = document.createElement("div");
+      row.className = "club-row";
+
+      var tag = document.createElement("div");
+      tag.className = "club-tag";
+      tag.textContent = c.label;
+      row.appendChild(tag);
+
+      var inp = document.createElement("input");
+      inp.className = "club-full";
+      inp.type = "number";
+      inp.inputMode = "numeric";
+      inp.min = "20"; inp.max = "200";
+      inp.value = c.f;
+      inp.id = "full" + ci;
+      inp.setAttribute("aria-label", c.label + " full swing carry, yards");
+      row.appendChild(inp);
+
+      var der = document.createElement("div");
+      der.className = "club-derived";
+      der.id = "der" + ci;
+      row.appendChild(der);
+
+      inp.addEventListener("input", function(){ setFull(ci, this.value); });
+      inp.addEventListener("blur",  function(){ this.value = nums[ci].f; });
+
+      rows.appendChild(row);
+      paintDerived(ci);
+    });
+    drawPeek();
+  }
+
+  function paintDerived(ci){
+    var c = nums[ci], der = byId("der" + ci);
+    if(der) der.innerHTML = "9:00 <b>" + c.s + "</b> &nbsp; 10:30 <b>" + c.m + "</b>";
+  }
+
+  function drawPeek(){
+    byId("clubsPeek").textContent = nums.map(function(c){ return c.f; }).join(" · ");
+  }
+
+  function setFull(ci, raw){
+    var v = parseInt(raw, 10);
+    if(isNaN(v)) return;
+    v = Math.min(200, Math.max(20, v));
+    var c = nums[ci];
+    c.f = v;
+    c.s = Math.max(10, Math.round(v * RATIOS[ci].s));
+    c.m = Math.max(10, Math.round(v * RATIOS[ci].m));
+    paintDerived(ci);
+    drawPeek();
+    drawMatrix();
+    render();
+    save();
+  }
+
+  /* ---------- matrix ---------- */
+  function drawMatrix(){
+    el.matrix.innerHTML = "";
+    nums.forEach(function(c){
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>"+c.label+"</td><td>"+c.s+"</td><td>"+c.m+"</td><td>"+c.f+"</td>";
+      el.matrix.appendChild(tr);
+    });
+  }
+
+  var KEY = "wedge-card-numbers-v1";
+  var storeOK = null;
+
+  function canStore(){
+    if(storeOK !== null) return storeOK;
+    try{
+      window.localStorage.setItem("__wc_test__", "1");
+      window.localStorage.removeItem("__wc_test__");
+      storeOK = true;
+    }catch(e){
+      storeOK = false;
+    }
+    return storeOK;
+  }
+
+  function flashSaved(ok){
+    el.saved.textContent = ok ? "Saved to this device" : "Saved for this session only";
+    el.saved.classList.toggle("warn", !ok);
+    el.saved.classList.add("on");
+    clearTimeout(flashSaved.t);
+    flashSaved.t = setTimeout(function(){ el.saved.classList.remove("on"); }, 1800);
+  }
+
+  function save(){
+    var payload = JSON.stringify(nums);
+    memory = payload;
+    var ok = false;
+    if(canStore()){
+      try{
+        window.localStorage.setItem(KEY, payload);
+        ok = true;
+      }catch(e){ ok = false; }
+    }
+    flashSaved(ok);
+  }
+
+  function load(){
+    var raw = null;
+    if(canStore()){
+      try{ raw = window.localStorage.getItem(KEY); }catch(e){ raw = null; }
+    }
+    if(!raw) raw = memory;
+    if(!raw) return;
+    try{
+      var parsed = JSON.parse(raw);
+      if(Array.isArray(parsed) && parsed.length === DEFAULTS.length){
+        var valid = parsed.every(function(c){
+          return c && typeof c.f === "number" && typeof c.s === "number" && typeof c.m === "number";
+        });
+        if(valid){
+          parsed.forEach(function(c, i){
+            c.label = DEFAULTS[i].label;
+            c.id = DEFAULTS[i].id;
+            c.loft = DEFAULTS[i].loft;
+          });
+          nums = parsed;
+          drawClubs(); drawMatrix(); render();
+        }
+      }
+    }catch(e){ /* corrupt payload, keep defaults */ }
+  }
+
+  /* ---------- wiring ---------- */
+  function setTarget(v){
+    target = Math.min(150, Math.max(15, v));
+    render();
+  }
+
+  byId("down").addEventListener("click", function(){ setTarget(target - 5); });
+  byId("up").addEventListener("click",   function(){ setTarget(target + 5); });
+  el.slider.addEventListener("input", function(){ setTarget(parseInt(this.value, 10)); });
+
+  byId("chips").addEventListener("click", function(e){
+    var b = e.target.closest(".chip");
+    if(!b) return;
+    var k = b.getAttribute("data-c");
+    var on = b.getAttribute("aria-pressed") === "true";
+
+    if(!on){
+      var pairs = {wind:"down", down:"wind", up:"dh", dh:"up", firm:"soft", soft:"firm"};
+      var opp = pairs[k];
+      if(opp && active[opp]){
+        active[opp] = false;
+        var ob = document.querySelector('.chip[data-c="'+opp+'"]');
+        if(ob) ob.setAttribute("aria-pressed","false");
+      }
+    }
+    active[k] = !on;
+    b.setAttribute("aria-pressed", String(!on));
+    syncWind();
+    render();
+  });
+
+  function syncWind(){
+    var show = !!(active.wind || active.down);
+    el.windBox.classList.toggle("on", show);
+    el.windLab.textContent = active.wind ? "Into wind" : "Downwind";
+  }
+
+  el.mph.addEventListener("input", function(){
+    mph = parseInt(this.value, 10);
+    el.mphVal.textContent = mph;
+    render();
+  });
+
+  byId("reset").addEventListener("click", function(){
+    nums = clone(DEFAULTS);
+    drawClubs(); drawMatrix(); render(); save();
+  });
+
+  load();
+  drawClubs();
+  drawMatrix();
+  render();
+
+  if(!canStore()){
+    var w = document.getElementById("storeWarn");
+    if(w) w.style.display = "block";
+  }
+})();
+</script>
+</body>
+</html>
