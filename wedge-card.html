@@ -414,7 +414,7 @@
     </summary>
     <div class="body">
       <p class="clubs-note">
-        Type your full-swing carry for each club. The 50% and 75% numbers scale with it
+        Type your full-swing carry for each club. The 9:00 and 10:30 numbers scale with it
         automatically, and every recommendation above updates.
       </p>
       <div id="clubRows"></div>
@@ -431,10 +431,10 @@
     <p class="eyebrow">Play</p>
     <div class="club" id="club">52°</div>
     <div class="facts">
-      <div class="fact"><u>Backswing</u><strong id="swing">75%</strong></div>
+      <div class="fact"><u>Backswing</u><strong id="swing">10:30</strong></div>
       <div class="fact"><u>Grip</u><strong id="grip">Full length</strong></div>
     </div>
-    <div class="cue" id="cue">Percentages are backswing length, not effort. Same speed every time.</div>
+    <div class="cue" id="cue">Same speed, same tempo. Length of backswing does the work.</div>
   </div>
   <p class="alt" id="alt"></p>
 
@@ -464,7 +464,7 @@
       <div class="body">
         <table>
           <thead>
-            <tr><th>Club</th><th>50%</th><th>75%</th><th>Full</th></tr>
+            <tr><th>Club</th><th>9:00</th><th>10:30</th><th>Full</th></tr>
           </thead>
           <tbody id="matrix"></tbody>
         </table>
@@ -486,7 +486,7 @@
           <li><b>20–30 yds, bare and firm</b>PW or 9-iron bump-and-run, gripped well down, ball back, weight forward. Zero bounce exposure.</li>
           <li><b>Chip, tight fringe</b>PW gripped to the bottom. One hop and release.</li>
           <li><b>Chip, rough or cushion</b>56, grip normal or barely down. You want mass through the grass.</li>
-          <li><b>Short-sided over sand</b>50% with the 56, face square. Don't open it — that stacks bounce on bounce. Accept 15 feet past.</li>
+          <li><b>Short-sided over sand</b>9:00 with the 56, face square. Don't open it — that stacks bounce on bounce. Accept 15 feet past.</li>
         </ul>
       </div>
     </details>
@@ -545,8 +545,8 @@
     {id:"pw", label:"PW",  loft:0, s:95, m:118, f:140}
   ];
   var SWINGS = [
-    {key:"s", name:"50%",   pen:0.8},
-    {key:"m", name:"75%",   pen:0.0},
+    {key:"s", name:"9:00",  pen:0.8},
+    {key:"m", name:"10:30", pen:0.0},
     {key:"f", name:"Full",  pen:0.6}
   ];
   var GRIPS = [
@@ -647,7 +647,7 @@
     el.grip.textContent = best.grip.name;
 
     var note = cues.length ? cues.join(" ")
-      : "Percentages are backswing length, not effort. Same speed every time.";
+      : "Same speed, same tempo. Length of backswing does the work.";
     if(playing !== target){
       note = "Plays like " + playing + ". " + note;
     }
@@ -666,11 +666,11 @@
   function shortGame(y){
     var firm = !!active.firm;
     var plan;
-    if(y >= 45)      plan = {c:"56°", s:"40%", g:'Down ½"', cue:"Land it a third of the way and let it release."};
-    else if(y >= 30) plan = {c:"56°", s:"30%",         g:'Down 1"',  cue:"Square face, chest turning through. Land short, let it run."};
+    if(y >= 45)      plan = {c:"56°", s:"Half length", g:'Down ½"', cue:"Land it a third of the way and let it release."};
+    else if(y >= 30) plan = {c:"56°", s:"Short",       g:'Down 1"',  cue:"Square face, chest turning through. Land short, let it run."};
     else if(y >= 18) plan = firm
       ? {c:"PW", s:"Bump-and-run", g:"Well down", cue:"Ball back, weight forward, putting-stroke motion. Takes the bounce out of play."}
-      : {c:"56°", s:"30%", g:'Down 1"', cue:"Quiet hands, rotation-driven, no wrist flick."};
+      : {c:"56°", s:"Short", g:'Down 1"', cue:"Quiet hands, rotation-driven, no wrist flick."};
     else             plan = {c:"PW", s:"Chip", g:"To the bottom", cue:"Low, one hop and release."};
 
     if(firm && y >= 30) plan.cue = "Bare lie: ball an inch back, weight forward, square face. " + plan.cue;
@@ -723,7 +723,7 @@
 
   function paintDerived(ci){
     var c = nums[ci], der = byId("der" + ci);
-    if(der) der.innerHTML = "50% <b>" + c.s + "</b> &nbsp; 75% <b>" + c.m + "</b>";
+    if(der) der.innerHTML = "9:00 <b>" + c.s + "</b> &nbsp; 10:30 <b>" + c.m + "</b>";
   }
 
   function drawPeek(){
